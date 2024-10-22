@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çizgi Grafik Oluşturucu</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #chartContainer {
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Çizgi Grafik Oluşturucu</h1>
+    <div>
+        <input type="text" id="labels" placeholder="Etiketler (virgül ile ayırın)">
+        <input type="text" id="data" placeholder="Veriler (virgül ile ayırın)">
+        <button id="createChart">Grafiği Oluştur</button>
+    </div>
+    <div id="chartContainer">
+        <canvas id="myChart"></canvas>
+    </div>
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        let myChart;
+
+        document.getElementById('createChart').addEventListener('click', function() {
+            const labels = document.getElementById('labels').value.split(',').map(label => label.trim());
+            const data = document.getElementById('data').value.split(',').map(Number);
+
+            if (myChart) {
+                myChart.destroy(); // Var olan grafiği yok et
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Veri Seti',
+                        data: data,
+                        fill: false,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
