@@ -11,7 +11,11 @@
             font-family: Montserrat, sans-serif;
             text-align: center;
         }
-       
+        input, button {
+            font-family: Montserrat, sans-serif;
+            margin: 5px;
+            padding: 10px;
+        }
         #chartContainer {
             max-width: 600px;
             margin: auto;
@@ -23,7 +27,9 @@
     <div>
         <input type="text" id="labels" placeholder="Etiketler (virgül ile ayırın)">
         <input type="text" id="data" placeholder="Veriler (virgül ile ayırın)">
+        <br>
         <button id="createChart">Grafiği Oluştur</button>
+        <button id="downloadChart">Grafiği İndir</button>
     </div>
     <div id="chartContainer">
         <canvas id="myChart"></canvas>
@@ -45,7 +51,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Veri Seti',
+                        label: 'Veri Seti', // Legend'da görünen isim
                         data: data,
                         fill: false,
                         borderColor: 'rgba(75, 192, 192, 1)',
@@ -58,9 +64,33 @@
                         y: {
                             beginAtZero: true
                         }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true, // Legend'ı göster
+                            position: 'top' // Legend'ın konumu
+                        }
+                    },
+                    elements: {
+                        line: {
+                            borderWidth: 2 // Çizgi kalınlığı
+                        },
+                        point: {
+                            radius: 5 // Nokta büyüklüğü
+                        }
+                    },
+                    font: {
+                        family: 'Montserrat' // Grafik fontu
                     }
                 }
             });
+        });
+
+        document.getElementById('downloadChart').addEventListener('click', function() {
+            const link = document.createElement('a');
+            link.href = ctx.canvas.toDataURL('image/png'); // Grafik resmini oluştur
+            link.download = 'grafik2024.png'; // İndirme adı
+            link.click(); // İndir
         });
     </script>
 </body>
